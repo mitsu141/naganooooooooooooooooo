@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ショート動画生成</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background:#111;
+      color:white;
+      text-align:center;
+      padding:40px;
+    }
+    textarea {
+      width:90%;
+      height:200px;
+      border-radius:10px;
+      padding:10px;
+    }
+    button {
+      margin-top:20px;
+      padding:15px 30px;
+      font-size:18px;
+      border:none;
+      background:#ff4444;
+      color:white;
+      border-radius:30px;
+      cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+
+<h1>AIショート動画生成</h1>
+
+<textarea id="script">
+ヤマハって、なんで楽器もバイクも作ってるの？
+
+実はヤマハは浜松でオルガン修理から始まった会社です。
+</textarea>
+
+<br>
+<button onclick="generate()">動画を生成</button>
+
+<p id="status"></p>
+
+<script>
+async function generate(){
+  document.getElementById("status").innerText="生成中...";
+
+  const script = document.getElementById("script").value;
+
+  const res = await fetch("https://YOUR_RENDER_URL/generate",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json"},
+    body: JSON.stringify({script})
+  });
+
+  const data = await res.json();
+
+  document.getElementById("status").innerText="完成！ダウンロード中";
+
+  window.location.href = data.download;
+}
+</script>
+
+</body>
+</html>
